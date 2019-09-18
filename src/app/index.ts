@@ -111,7 +111,8 @@ module.exports = class TheiaExtension extends Base {
                 message: "The extension's type",
                 choices: [
                     { value: 1, name: 'hello-world' },
-                    { value: 2, name: 'widget' }
+                    { value: 2, name: 'widget' },
+                    { value: 3, name: 'labelprovider' }
                 ]
             }]).then((answers) => {
                 (this.options as any).extensionName = answers.name;
@@ -226,6 +227,37 @@ module.exports = class TheiaExtension extends Base {
                 this.fs.copyTpl(
                     this.templatePath('widget/index.css'),
                     this.extensionPath('src/browser/style/index.css'),
+                    { params: this.params }
+                );
+            }
+        }
+
+        /** labelprovider */
+        if (this.params.extensionType === 3) {
+            this.fs.copyTpl(
+                this.templatePath('labelprovider/frontend-module.ts'),
+                this.extensionPath('src/browser/' + this.params.extensionPath + '-frontend-module.ts'),
+                { params: this.params }
+            );
+            if (this.params.example) {
+                this.fs.copyTpl(
+                    this.templatePath('labelprovider/contribution.ts'),
+                    this.extensionPath('src/browser/' + this.params.extensionPath + '-contribution.ts'),
+                    { params: this.params }
+                );
+                this.fs.copy(
+                    this.templatePath('labelprovider/style/baseline_code_black_18dp.png'),
+                    this.extensionPath('src/browser/style/baseline_code_black_18dp.png'),
+                    { params: this.params }
+                );
+                this.fs.copy(
+                    this.templatePath('labelprovider/style/baseline_code_white_18dp.png'),
+                    this.extensionPath('src/browser/style/baseline_code_white_18dp.png'),
+                    { params: this.params }
+                );
+                this.fs.copyTpl(
+                    this.templatePath('labelprovider/style/example.css'),
+                    this.extensionPath('src/browser/style/example.css'),
                     { params: this.params }
                 );
             }
