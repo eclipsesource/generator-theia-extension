@@ -16,12 +16,12 @@
   "author": "TypeFox",
   "license": "Apache-2.0",
   "dependencies": {
-    "yeoman-generator": "^1.0.0"
+    "yeoman-generator": "^4.0.2"
   },
   "devDependencies": {
-    "@types/yeoman-generator": "^1.0.3",
-    "rimraf": "^2.6.1",
-    "typescript": "^2.5.2"
+    "@types/yeoman-generator": "^3.1.4",
+    "rimraf": "^3.0.0",
+    "typescript": "^3.6.3"
   },
   "files": [
     "generators",
