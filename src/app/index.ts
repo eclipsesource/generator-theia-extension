@@ -25,6 +25,7 @@ module.exports = class TheiaExtension extends Base {
         vscode: boolean
         theiaVersion: string
         lernaVersion: string
+        skipInstall: boolean
     };
 
     constructor(args: string | string[], options: any) {
@@ -99,6 +100,11 @@ module.exports = class TheiaExtension extends Base {
         });
         this.option('lerna-version', {
             description: 'The version of lerna to use',
+            type: String,
+            default: '2.4.0'
+        });
+        this.option('skipInstall', {
+            description: 'Skip install after generation',
             type: String,
             default: '2.4.0'
         });
@@ -289,7 +295,9 @@ module.exports = class TheiaExtension extends Base {
     }
 
     install() {
-        this.spawnCommand('yarn', []);
+        if(!(this.options as any).skipInstall) {
+            this.spawnCommand('yarn', []);
+        }
     }
 
     private _capitalize(name: string): string {
