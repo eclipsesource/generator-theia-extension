@@ -103,10 +103,10 @@ module.exports = class TheiaExtension extends Base {
             type: String,
             default: '2.4.0'
         });
-        this.option('skipInstall', {
+        this.option('skip-install', {
             description: 'Skip install after generation',
-            type: String,
-            default: '2.4.0'
+            type: Boolean,
+            default: false
         });
     }
 
