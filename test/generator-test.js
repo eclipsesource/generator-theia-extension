@@ -13,6 +13,9 @@ describe('test extension generation', function () {
                 type: 'hello-world',
                 name
             })
+            .withOptions({
+                skipInstall: true
+            })
             .toPromise().then(function () {
                 try {
                     assert.file([
@@ -38,6 +41,9 @@ describe('test extension generation', function () {
             .withPrompts({
                 type: 'widget',
                 name
+            })
+            .withOptions({
+                skipInstall: true
             })
             .toPromise().then(function () {
                 try {
@@ -66,6 +72,9 @@ describe('test extension generation', function () {
             .withPrompts({
                 type: 'labelprovider',
                 name
+            })
+            .withOptions({
+                skipInstall: true
             })
             .toPromise().then(function () {
                 try {
@@ -106,6 +115,7 @@ describe('test extension generation parameter', function () {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withArguments([name])
             .withOptions({
+                skipInstall: true,
                 extensionType,
                 author,
                 version,
@@ -148,6 +158,7 @@ describe('test extension generation parameter', function () {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withArguments([name])
             .withOptions({
+                skipInstall: true,
                 extensionType,
                 example,
                 vscode
