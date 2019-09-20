@@ -1,6 +1,12 @@
 import path = require('path');
 import Base = require('yeoman-generator');
 
+enum ExtensionType {
+    HelloWorld = 'hello-world',
+    Widget = 'widget',
+    LabelProvider = 'labelprovider'
+}
+
 module.exports = class TheiaExtension extends Base {
 
     params: {
@@ -8,7 +14,7 @@ module.exports = class TheiaExtension extends Base {
         version: string
         license: string
         extensionName: string
-        extensionType: number
+        extensionType: string
         unscopedExtensionName: string
         githubURL: string
         extensionPrefix: string
@@ -23,11 +29,16 @@ module.exports = class TheiaExtension extends Base {
 
     constructor(args: string | string[], options: any) {
         super(args, options);
+
         this.argument('extensionName', {
             type: String,
             required: false,
         });
 
+        this.option('extensionType', { 
+            alias: 'y',
+            type: String
+        });
         this.option('browser', {
             alias: 'b',
             description: 'Generate a browser app',
@@ -97,27 +108,36 @@ module.exports = class TheiaExtension extends Base {
         this.sourceRoot(__dirname + '/../../templates');
     }
 
-    prompting() {
-        if (!(this.options as any).extensionName)
-            return this.prompt([{
-                type: 'input',
-                name: 'name',
-                message: "The extension's name",
-                default: path.parse(process.cwd()).name
-            },
-            {
+    async prompting() {
+        let extensionType = (this.options as any).extensionType;
+        const inExtensionType = (<any>Object).values(ExtensionType).includes(extensionType);
+        if ((extensionType === undefined) || !inExtensionType) {
+            if (!(extensionType === undefined)) {
+                this.log(`Invalid extension type: ${extensionType}`);
+            }
+            const answer = await this.prompt({
                 type: 'list',
                 name: 'type',
                 message: "The extension's type",
                 choices: [
-                    { value: 1, name: 'hello-world' },
-                    { value: 2, name: 'widget' },
-                    { value: 3, name: 'labelprovider' }
-                ]
-            }]).then((answers) => {
-                (this.options as any).extensionName = answers.name;
-                (this.options as any).extensionType = answers['type'];
+                    { value: ExtensionType.HelloWorld, name: 'Hello World' },
+                    { value: ExtensionType.Widget, name: 'Widget' },
+                    { value: ExtensionType.LabelProvider, name: 'Label provider' }
+                ] 
             });
+            (this.options as any).extensionType = answer.type;
+        }
+
+        let extensionName = (this.options as any).extensionName;
+        if (!extensionName) {
+            const answer = await this.prompt({
+                type: 'input',
+                name: 'name',
+                message: "The extension's name",
+                default: path.parse(process.cwd()).name
+            });
+            (this.options as any).extensionName = answer.name;
+        }        
     }
 
     configuring() {
@@ -128,11 +148,9 @@ module.exports = class TheiaExtension extends Base {
             extensionName;
         const extensionPath = path.normalize(unscopedExtensionName).replace('/', '-');
         const extensionPrefix = extensionPath.split('-').map(name => this._capitalize(name)).join('');
-        let extensionType = options.extensionType as number;
-        if(extensionType === undefined) {
-            extensionType = 1;
-        }
-        this.log(extensionPrefix)
+        const extensionType = options.extensionType;
+        const githubURL = options.githubURL;
+        this.log(extensionPrefix);
         this.params = {
             ...options,
             extensionName,
@@ -140,6 +158,7 @@ module.exports = class TheiaExtension extends Base {
             extensionPath,
             extensionPrefix,
             extensionType,
+            githubURL,
             theiaVersion: options["theia-version"],
             lernaVersion: options["lerna-version"],
         }
@@ -191,37 +210,37 @@ module.exports = class TheiaExtension extends Base {
         );
 
         /** hello-world */
-        if (this.params.extensionType === 1) {
+        if (this.params.extensionType === ExtensionType.HelloWorld) {
             this.fs.copyTpl(
                 this.templatePath('hello-world/frontend-module.ts'),
-                this.extensionPath('src/browser/' + this.params.extensionPath + '-frontend-module.ts'),
+                this.extensionPath(`src/browser/${this.params.extensionPath}-frontend-module.ts`),
                 { params: this.params }
             );
             if (this.params.example) {
                 this.fs.copyTpl(
                     this.templatePath('hello-world/contribution.ts'),
-                    this.extensionPath('src/browser/' + this.params.extensionPath + '-contribution.ts'),
+                    this.extensionPath(`src/browser/${this.params.extensionPath}-contribution.ts`),
                     { params: this.params }
                 );
             }
         }
 
         /** widget */
-        if (this.params.extensionType === 2) {
+        if (this.params.extensionType === ExtensionType.Widget) {
             this.fs.copyTpl(
                 this.templatePath('widget/frontend-module.ts'),
-                this.extensionPath('src/browser/' + this.params.extensionPath + '-frontend-module.ts'),
+                this.extensionPath(`src/browser/${this.params.extensionPath}-frontend-module.ts`),
                 { params: this.params }
             );
             if (this.params.example) {
                 this.fs.copyTpl(
                     this.templatePath('widget/contribution.ts'),
-                    this.extensionPath('src/browser/' + this.params.extensionPath + '-contribution.ts'),
+                    this.extensionPath(`src/browser/${this.params.extensionPath}-contribution.ts`),
                     { params: this.params }
                 );
                 this.fs.copyTpl(
                     this.templatePath('widget/widget.tsx'),
-                    this.extensionPath('src/browser/' + this.params.extensionPath + '-widget.tsx'),
+                    this.extensionPath(`src/browser/${this.params.extensionPath}-widget.tsx`),
                     { params: this.params }
                 );
                 this.fs.copyTpl(
@@ -233,16 +252,16 @@ module.exports = class TheiaExtension extends Base {
         }
 
         /** labelprovider */
-        if (this.params.extensionType === 3) {
+        if (this.params.extensionType === ExtensionType.LabelProvider) {
             this.fs.copyTpl(
                 this.templatePath('labelprovider/frontend-module.ts'),
-                this.extensionPath('src/browser/' + this.params.extensionPath + '-frontend-module.ts'),
+                this.extensionPath(`src/browser/${this.params.extensionPath}-frontend-module.ts`),
                 { params: this.params }
             );
             if (this.params.example) {
                 this.fs.copyTpl(
                     this.templatePath('labelprovider/contribution.ts'),
-                    this.extensionPath('src/browser/' + this.params.extensionPath + '-contribution.ts'),
+                    this.extensionPath(`src/browser/${this.params.extensionPath}-contribution.ts`),
                     { params: this.params }
                 );
                 this.fs.copy(
