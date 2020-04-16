@@ -1,0 +1,10 @@
+{
+  'label': 'Test',
+  'persons': [
+    {
+      'firstname': 'Max',
+      'lastname': 'Mustermann'
+    }
+  ],
+  'components': []
+}
