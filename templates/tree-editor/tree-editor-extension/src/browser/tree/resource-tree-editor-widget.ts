@@ -27,6 +27,7 @@ import {
   NavigatableTreeEditorWidget,
   TreeEditor,
 } from 'theia-tree-editor';
+import { postConstruct } from 'inversify';
 
 export class ResourceTreeEditorWidget extends NavigatableTreeEditorWidget {
   protected resource: Resource;
@@ -49,40 +50,52 @@ export class ResourceTreeEditorWidget extends NavigatableTreeEditorWidget {
       widget_id,
       options
     );
-
-    const uri = this.options.uri;
-    provider.get(uri).then(resource => {
-      this.resource = resource
-    });
   }
 
-
+  @postConstruct()
+  protected init(): void {
+    const uri = this.options.uri;
+    this.provider.get(uri).then(resource => {
+      this.resource = resource;
+      this.load();
+    });
+  }
 
   public save(): void {
     const content = JSON.stringify(this.data);
     this.resource.saveContents(content).then( _ =>
       this.setDirty(true)
-    ).catch( _ => 
-      this.setDirty(false)
-    );
-  }
-
-  public load(): void {
-    console.log('test');
-    this.resource.readContents().then( content => {
-      const json = JSON.parse(content);
-      this.data = json;
-      const treeData: TreeEditor.TreeData = {
-        error: false,
-        data: json, // json sind die aus der resource geladenen daten
-      }
-      this.treeWidget.setData(treeData);
+    ).catch( error => {
+      this.setDirty(false);
+      console.error(error);
     });
   }
 
+  public async load(): Promise<void> {
+    console.log('test');
+    let content = undefined;
+    let error = false;
+    try {
+      content = await this.resource.readContents();
+    } catch (e) {
+      console.error('Loading failed: ', e);
+      error = true;
+    }
+    const json = JSON.parse(content);
+    this.data = json;
+    const treeData: TreeEditor.TreeData = {
+      error,
+      data: json,
+    }
+    this.treeWidget.setData(treeData);
+  }
+
   private setDirty(dirty: boolean) {
-    this.dirty = dirty;
-    this.onDirtyChangedEmitter.fire();
+    if(this.dirty !== dirty) {
+      this.dirty = dirty;
+
+      this.onDirtyChangedEmitter.fire();
+    }
   }
 
 

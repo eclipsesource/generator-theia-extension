@@ -1,5 +1,5 @@
 /*!
- * Copyright (C) 2019 EclipseSource and others.
+ * Copyright (C) 2020 EclipseSource and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -62,7 +62,7 @@ export class TreeNodeFactory implements TreeEditor.NodeFactory {
       parent.expanded = true;
     }
     if (data.components) {
-      data.children.forEach((element: any, idx: any) => {
+      data.components.forEach((element: any, idx: any) => {
         this.mapData(element, node, 'components', idx);
       });
     }

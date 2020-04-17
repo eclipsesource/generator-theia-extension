@@ -1,5 +1,5 @@
 /*!
- * Copyright (C) 2019 EclipseSource and others.
+ * Copyright (C) 2020 EclipseSource and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -18,7 +18,6 @@ import { ApplicationShell, NavigatableWidgetOptions, OpenerService, WidgetOpener
 import URI from '@theia/core/lib/common/uri';
 import { inject, injectable } from 'inversify';
 import {
-  JsonFormsTreeContextMenu,
   JsonFormsTreeEditorContribution,
   JsonFormsTreeEditorWidget,
   TreeEditor,
@@ -62,11 +61,8 @@ export class TreeContribution extends JsonFormsTreeEditorContribution {
   }
 
   registerMenus(menus: MenuModelRegistry): void {
-    menus.registerMenuAction(JsonFormsTreeContextMenu.CONTEXT_MENU, {
-      commandId: TreeCommands.OPEN_WORKFLOW_DIAGRAM.id,
-      label: TreeCommands.OPEN_WORKFLOW_DIAGRAM.label
-    });
-
+    // register your custom menu actions here
+    
     super.registerMenus(menus);
   }
 

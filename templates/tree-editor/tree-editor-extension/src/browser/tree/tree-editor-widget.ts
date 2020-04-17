@@ -56,15 +56,17 @@ export class TreeEditorWidget extends ResourceTreeEditorWidget {
     super.save();
   }
 
-  public load(): void {
+  public async load(): Promise<void> {
     super.load();
   }
 
   protected deleteNode(node: Readonly<TreeEditor.Node>): void {
+    // TODO: handle node deletion here
     super.deleteNode(node);
   }
 
   protected addNode({ node, type, property }: AddCommandProperty): void {
+    // TODO: handle node add here
     super.addNode({ node, type, property });
   }
 
