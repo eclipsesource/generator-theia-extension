@@ -24,7 +24,7 @@ import {
   NavigatableTreeEditorOptions,
   TreeEditor,
 } from 'theia-tree-editor';
-import { ResourceTreeEditorWidget } from  './resource-tree-editor-widget';
+import { ResourceTreeEditorWidget } from  'theia-tree-editor';
 
 @injectable()
 export class TreeEditorWidget extends ResourceTreeEditorWidget {
@@ -40,6 +40,8 @@ export class TreeEditorWidget extends ResourceTreeEditorWidget {
     protected readonly options: NavigatableTreeEditorOptions,
     @inject(DefaultResourceProvider)
     protected provider: DefaultResourceProvider,
+    @inject(TreeEditor.NodeFactory)
+    protected readonly nodeFactory: TreeEditor.NodeFactory
   ) {
     super(
       treeWidget,
@@ -48,8 +50,13 @@ export class TreeEditorWidget extends ResourceTreeEditorWidget {
       logger,
       TreeEditorWidget.WIDGET_ID,
       options,
-      provider
+      provider,
+      nodeFactory,
     );
+  }
+
+  protected getTypeProperty() {
+    return "eClass";
   }
 
   public save(): void {
@@ -76,6 +83,7 @@ export class TreeEditorWidget extends ResourceTreeEditorWidget {
 
   protected configureTitle(title: Title<Widget>): void {
     super.configureTitle(title);
+    title.iconClass = 'fa fa-tree dark-purple';
   }
 }
 export namespace TreeEditorWidget {

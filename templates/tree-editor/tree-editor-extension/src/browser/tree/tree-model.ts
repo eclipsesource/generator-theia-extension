@@ -22,7 +22,7 @@ export namespace TreeModel {
     export const Person = '#person';
 
     export function name(type: string): string {
-      return new URI(type).fragment.substring(2);
+      return new URI(type).fragment;
     }
   }
 
@@ -30,10 +30,6 @@ export namespace TreeModel {
   export const childrenMapping: Map<string, TreeEditor.ChildrenDescriptor[]> = new Map([
     [
       Type.Component, [
-        {
-          property: 'components',
-          children: [Type.Component]
-        },
         {
           property: 'persons',
           children: [Type.Person]

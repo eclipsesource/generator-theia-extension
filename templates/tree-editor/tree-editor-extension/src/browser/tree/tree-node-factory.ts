@@ -50,7 +50,7 @@ export class TreeNodeFactory implements TreeEditor.NodeFactory {
       name: this.labelProvider.getName(data),
       parent: parent,
       jsonforms: {
-        type: data.$id,
+        type: data.eClass,
         data: data,
         property: property!,
         index: typeof indexOrKey === 'number' ? indexOrKey.toFixed(0) : indexOrKey
