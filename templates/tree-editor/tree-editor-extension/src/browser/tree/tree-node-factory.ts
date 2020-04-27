@@ -38,7 +38,7 @@ export class TreeNodeFactory implements TreeEditor.NodeFactory {
     return [];
   }
 
-  mapData(data: any, parent?: TreeEditor.Node, property?: string, indexOrKey?: number | string): TreeEditor.Node {
+  mapData(data: any, parent?: TreeEditor.Node, property?: string, indexOrKey?: number | string, defaultType?: string): TreeEditor.Node {
     if (!data) {
       // sanity check
       this.logger.warn('mapData called without data');
@@ -60,11 +60,6 @@ export class TreeNodeFactory implements TreeEditor.NodeFactory {
     if (parent) {
       parent.children.push(node);
       parent.expanded = true;
-    }
-    if (data.components) {
-      data.components.forEach((element: any, idx: any) => {
-        this.mapData(element, node, 'components', idx);
-      });
     }
     if (data.persons) {
       data.persons.forEach((element: any, idx: any) => {
@@ -93,4 +88,16 @@ export class TreeNodeFactory implements TreeEditor.NodeFactory {
       jsonforms: undefined
     }
   };
+
+  protected getType(type: string, data: any): string {
+    if (type) {
+        // given eClass
+        return type;
+    }
+    if (data.eClass) {
+        // eClass of node
+        return data.eClass;
+    }
+    return undefined;
+}
 }

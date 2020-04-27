@@ -13,16 +13,22 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-import { injectable } from 'inversify';
+
+import { ILogger } from '@theia/core';
+import { inject, injectable } from 'inversify';
 import { TreeEditor } from 'theia-tree-editor';
 
 import { TreeModel } from './tree-model';
-import { schema, uischema } from './tree-schema';
+import { 
+  schema,
+  personView,
+  componentView
+} from './tree-schema';
 
 @injectable()
 export class TreeModelService implements TreeEditor.ModelService {
 
-  constructor() { }
+  constructor(@inject(ILogger) private readonly logger: ILogger) { }
 
   getDataForNode(node: TreeEditor.Node) {
     return node.jsonforms.data;
@@ -36,12 +42,51 @@ export class TreeModelService implements TreeEditor.ModelService {
   }
 
   private getSubSchemaForNode(node: TreeEditor.Node) {
-    return schema;
+    const schema = this.getSchemaForType(node.jsonforms.data.eClass);
+    if (schema) {
+      return schema;
+    }
+    return undefined;
   }
+
+  private getSchemaForType(type: string) {
+    if (!type) {
+      return undefined;
+    }
+    const localSchema = Object.entries(schema.definitions)
+      .map(entry => entry[1])
+      .find(
+        definition =>
+          definition.properties && definition.properties.eClass.const === type
+      );
+    if (!localSchema) {
+      this.logger.warn("Can't find definition schema for type " + type);
+    }
+    return localSchema;
+}
   
   getUiSchemaForNode(node: TreeEditor.Node) {
-    return uischema;
+    const schema = this.getUiSchemaForType(node.jsonforms.data.eClass);
+    if (schema) {
+      return schema;
+    }
+    return undefined;
   }
+
+  private getUiSchemaForType(type: string) {
+    if (!type) {
+      return undefined;
+    }
+    switch (type) {
+      case TreeModel.Type.Component:
+        return componentView;
+      case TreeModel.Type.Person:
+        return personView;
+      default:
+        this.logger.warn("Can't find registered ui schema for type " + type);
+        return undefined;
+    }
+}
 
   getChildrenMapping(): Map<string, TreeEditor.ChildrenDescriptor[]> {
     return TreeModel.childrenMapping;

@@ -24,7 +24,7 @@ const DEFAULT_COLOR = 'black';
 
 const ICON_CLASSES: Map<string, string> = new Map([
   [TreeModel.Type.Component, 'fa-cube ' + DEFAULT_COLOR],
-  [TreeModel.Type.Person, 'fa-random ' + DEFAULT_COLOR],
+  [TreeModel.Type.Person, 'fa-user ' + DEFAULT_COLOR],
 ]);
 
 /* Icon for unknown types */
@@ -42,20 +42,28 @@ export class TreeLabelProvider implements LabelProviderContribution {
   }
 
   public getIcon(element: object): string | undefined {
+    const data = TreeEditor.Node.is(element) ? element.jsonforms.data : element;
     let iconClass: string;
-    if (TreeEditor.CommandIconInfo.is(element)) {
-      iconClass = ICON_CLASSES.get(element.type);
-    } else if (TreeEditor.Node.is(element)) {
-      iconClass = ICON_CLASSES.get(element.jsonforms.type);
+    if(data.eClass) {
+      switch(data.eClass) {
+        case TreeModel.Type.Component:
+        case TreeModel.Type.Person:
+          iconClass = ICON_CLASSES.get(data.eClass);
+      }
     }
+    return iconClass ? 'fa ' + iconClass : 'fa ' + UNKNOWN_ICON;
 
-    return iconClass ? 'fa ' + iconClass : 'far ' + UNKNOWN_ICON;
   }
 
   public getName(element: object): string | undefined {
     const data = TreeEditor.Node.is(element) ? element.jsonforms.data : element;
-    if(data.name) {
-      return data.name;
+    if(data.eClass) {
+      switch(data.eClass) {
+        case TreeModel.Type.Component:
+          return data.label;
+        case TreeModel.Type.Person:
+          return data.firstname + ' ' + data.lastname;
+      }
     }
     return undefined;
   }

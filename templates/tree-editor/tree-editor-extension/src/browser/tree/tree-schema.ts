@@ -28,23 +28,62 @@ export const uischema = {
         {
           'type': 'Control',
           'label': 'First Name',
-          'scope': '#/properties/firstname'
+          'scope': '#/properties/person/properties/firstname'
         },
         {
           'type': 'Control',
           'label': 'Last Name',
-          'scope': '#/properties/lastname'
+          'scope': '#/properties/person/properties/lastname'
         }
       ]
     }
   ]
 };
 
+export const componentView = {
+  'type': 'VerticalLayout',
+  'elements': [
+    {
+      'type': 'Control',
+      'label': 'Label',
+      'scope': '#/properties/label'
+    },
+    {
+      "type": "VerticalLayout",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/persons"
+        }
+      ]
+    }
+  ]
+};
+
+export const personView = {
+  'type': 'VerticalLayout',
+  'elements': [
+    {
+      'type': 'Control',
+      'label': 'First Name',
+      'scope': '#/properties/firstname'
+    },
+    {
+      'type': 'Control',
+      'label': 'Last Name',
+      'scope': '#/properties/lastname'
+    }
+  ]
+}
+
 export const schema = {
   'definitions': {
     'component': {
       'title': 'Component',
       'properties': {
+        'eClass': {
+          'const': '#component'
+        },
         'label': {
           'type': 'string'
         },
@@ -58,8 +97,11 @@ export const schema = {
       'additionalProperties': false
     },
     'person': {
-      'title': 'person',
+      'title': 'Person',
       'properties': {
+        'eClass': {
+          'const': '#person'
+        },
         'firstname': {
           'type': 'string'
         },

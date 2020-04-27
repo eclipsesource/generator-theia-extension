@@ -34,7 +34,7 @@ export class TreeLabelProviderContribution implements LabelProviderContribution 
   }
 
   getIcon(): string {
-    return 'tree-icon dark-purple';
+    return 'coffee-icon dark-purple';
   }
   
   // Do not need to specify getName() nor getLongName() because the default uri label provider handles this

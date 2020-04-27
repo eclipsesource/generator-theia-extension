@@ -72,7 +72,6 @@ export class ResourceTreeEditorWidget extends NavigatableTreeEditorWidget {
   }
 
   public async load(): Promise<void> {
-    console.log('test');
     let content = undefined;
     let error = false;
     try {
@@ -93,7 +92,6 @@ export class ResourceTreeEditorWidget extends NavigatableTreeEditorWidget {
   private setDirty(dirty: boolean) {
     if(this.dirty !== dirty) {
       this.dirty = dirty;
-
       this.onDirtyChangedEmitter.fire();
     }
   }
