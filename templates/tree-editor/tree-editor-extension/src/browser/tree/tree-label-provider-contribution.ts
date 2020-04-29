@@ -42,17 +42,21 @@ export class TreeLabelProvider implements LabelProviderContribution {
   }
 
   public getIcon(element: object): string | undefined {
-    const data = TreeEditor.Node.is(element) ? element.jsonforms.data : element;
     let iconClass: string;
-    if(data.eClass) {
-      switch(data.eClass) {
-        case TreeModel.Type.Component:
-        case TreeModel.Type.Person:
-          iconClass = ICON_CLASSES.get(data.eClass);
+    if (TreeEditor.CommandIconInfo.is(element)) {
+      iconClass = ICON_CLASSES.get(element.type);
+    } else if (TreeEditor.Node.is(element)) {
+      const data = element.jsonforms.data;
+      if (data.eClass) {
+        switch (data.eClass) {
+          case TreeModel.Type.Component:
+          case TreeModel.Type.Person:
+            iconClass = ICON_CLASSES.get(data.eClass);
+        }
       }
     }
-    return iconClass ? 'fa ' + iconClass : 'fa ' + UNKNOWN_ICON;
 
+    return iconClass ? 'fa ' + iconClass : 'fa ' + UNKNOWN_ICON;
   }
 
   public getName(element: object): string | undefined {
