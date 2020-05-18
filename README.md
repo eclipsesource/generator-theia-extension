@@ -32,6 +32,7 @@ Extension options
 1. `hello-world`: creates a simple extension which provides a command and menu item which displays a message.
 2. `widget`: creates the basis for a simple widget including a toggle command, alert message and button displaying a message.
 3. `labelprovider`: create a simple extension which adds a custom label (with icon) for `.my` files
+4. `tree-editor`: create a tree editor extension
 
 For configuration options, see
 

@@ -1,0 +1,54 @@
+import { Title, Widget } from '@theia/core/lib/browser';
+import { DefaultResourceProvider, ILogger } from '@theia/core/lib/common';
+import { WorkspaceService } from '@theia/workspace/lib/browser/workspace-service';
+import { inject, injectable } from 'inversify';
+import {
+  MasterTreeWidget,
+  DetailFormWidget,
+  NavigatableTreeEditorOptions,
+  TreeEditor,
+} from 'theia-tree-editor';
+import { ResourceTreeEditorWidget } from  'theia-tree-editor';
+
+@injectable()
+export class TreeEditorWidget extends ResourceTreeEditorWidget {
+  constructor(
+    @inject(MasterTreeWidget)
+    readonly treeWidget: MasterTreeWidget,
+    @inject(DetailFormWidget)
+    readonly formWidget: DetailFormWidget,
+    @inject(WorkspaceService)
+    readonly workspaceService: WorkspaceService,
+    @inject(ILogger) readonly logger: ILogger,
+    @inject(NavigatableTreeEditorOptions)
+    protected readonly options: NavigatableTreeEditorOptions,
+    @inject(DefaultResourceProvider)
+    protected provider: DefaultResourceProvider,
+    @inject(TreeEditor.NodeFactory)
+    protected readonly nodeFactory: TreeEditor.NodeFactory
+  ) {
+    super(
+      treeWidget,
+      formWidget,
+      workspaceService,
+      logger,
+      TreeEditorWidget.WIDGET_ID,
+      options,
+      provider,
+      nodeFactory,
+    );
+  }
+
+  protected getTypeProperty() {
+    return "typeId";
+  }
+
+  protected configureTitle(title: Title<Widget>): void {
+    super.configureTitle(title);
+    title.iconClass = 'fa fa-tree dark-purple';
+  }
+}
+export namespace TreeEditorWidget {
+  export const WIDGET_ID = 'json-forms-tree-editor';
+  export const EDITOR_ID = 'com.eclipsesource.tree.editor';
+}
