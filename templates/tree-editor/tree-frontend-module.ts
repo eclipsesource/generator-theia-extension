@@ -10,37 +10,37 @@ import { TreeContribution } from './tree-contribution';
 import { TreeModelService } from './tree/tree-model-service';
 import { TreeNodeFactory } from './tree/tree-node-factory';
 import { TreeEditorWidget } from './tree/tree-editor-widget';
-import { TreeLabelProvider } from './tree/tree-label-provider-contribution';
-import { TreeLabelProviderContribution } from './tree-label-provider';
+import { TreeLabelProvider } from './tree/tree-label-provider';
+import { TreeLabelProviderContribution } from './tree-label-provider-contribution';
 
 export default new ContainerModule(bind => {
-  // Bind Theia IDE contributions
-  bind(LabelProviderContribution).to(TreeLabelProviderContribution);
-  bind(OpenHandler).to(TreeContribution);
-  bind(MenuContribution).to(TreeContribution);
-  bind(CommandContribution).to(TreeContribution);
-  bind(LabelProviderContribution).to(TreeLabelProvider);
+    // Bind Theia IDE contributions
+    bind(LabelProviderContribution).to(TreeLabelProviderContribution);
+    bind(OpenHandler).to(TreeContribution);
+    bind(MenuContribution).to(TreeContribution);
+    bind(CommandContribution).to(TreeContribution);
+    bind(LabelProviderContribution).to(TreeLabelProvider);
 
-  // bind to themselves because we use them outside of the editor widget, too.
-  bind(TreeModelService).toSelf().inSingletonScope();
-  bind(TreeLabelProvider).toSelf().inSingletonScope();
+    // bind to themselves because we use them outside of the editor widget, too.
+    bind(TreeModelService).toSelf().inSingletonScope();
+    bind(TreeLabelProvider).toSelf().inSingletonScope();
 
-  bind<WidgetFactory>(WidgetFactory).toDynamicValue(context => ({
-    id: TreeEditorWidget.WIDGET_ID,
-    createWidget: (options: NavigatableWidgetOptions) => {
+    bind<WidgetFactory>(WidgetFactory).toDynamicValue(context => ({
+        id: TreeEditorWidget.WIDGET_ID,
+        createWidget: (options: NavigatableWidgetOptions) => {
 
-    const treeContainer = createBasicTreeContainter(
-      context.container,
-      TreeEditorWidget,
-      TreeModelService,
-      TreeNodeFactory
-    );
+            const treeContainer = createBasicTreeContainter(
+                context.container,
+                TreeEditorWidget,
+                TreeModelService,
+                TreeNodeFactory
+            );
 
-    // Bind options
-    const uri = new URI(options.uri);
-    treeContainer.bind(NavigatableTreeEditorOptions).toConstantValue({ uri });
+            // Bind options
+            const uri = new URI(options.uri);
+            treeContainer.bind(NavigatableTreeEditorOptions).toConstantValue({ uri });
 
-    return treeContainer.get(TreeEditorWidget);
-  }
-  }));
+            return treeContainer.get(TreeEditorWidget);
+        }
+    }));
 });

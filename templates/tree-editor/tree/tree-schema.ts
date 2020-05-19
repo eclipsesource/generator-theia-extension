@@ -1,101 +1,389 @@
-export const uischema = {
+export const controlUnitView = {
   'type': 'VerticalLayout',
   'elements': [
     {
-      'type': 'Control',
-      'label': 'Label',
-      'scope': '#/properties/label'
+      'type': 'Label',
+      'text': 'Control Unit'
     },
     {
-      'type': 'VerticalLayout',
+      'type': 'Group',
+      'label': 'Processor',
+      'elements': [
+        {
+          'type': 'HorizontalLayout',
+          'elements': [
+            {
+              'type': 'VerticalLayout',
+              'elements': [
+                {
+                  'type': 'Control',
+                  'label': 'Vendor',
+                  'scope': '#/properties/processor/properties/vendor'
+                },
+                {
+                  'type': 'Control',
+                  'label': 'Clock Speed',
+                  'scope': '#/properties/processor/properties/clockSpeed'
+                },
+                {
+                  'type': 'Control',
+                  'label': 'Number Of Cores',
+                  'scope': '#/properties/processor/properties/numberOfCores'
+                }
+              ]
+            },
+            {
+              'type': 'VerticalLayout',
+              'elements': [
+                {
+                  'type': 'Control',
+                  'label': 'Socketconnector Type',
+                  'scope': '#/properties/processor/properties/socketconnectorType'
+                },
+                {
+                  'type': 'Control',
+                  'label': 'Manufacturing Process',
+                  'scope': '#/properties/processor/properties/manufactoringProcess'
+                },
+                {
+                  'type': 'Control',
+                  'label': 'Thermal Design Power',
+                  'scope': '#/properties/processor/properties/thermalDesignPower'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      'type': 'Group',
+      'label': 'Display',
+      'elements': [
+        {
+          'type': 'HorizontalLayout',
+          'elements': [
+            {
+              'type': 'Control',
+              'label': 'Width',
+              'scope': '#/properties/display/properties/width'
+            },
+            {
+              'type': 'Control',
+              'label': 'Height',
+              'scope': '#/properties/display/properties/height'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      'type': 'Group',
+      'label': 'Dimension',
+      'elements': [
+        {
+          'type': 'HorizontalLayout',
+          'elements': [
+            {
+              'type': 'Control',
+              'label': 'Width',
+              'scope': '#/properties/dimension/properties/width'
+            },
+            {
+              'type': 'Control',
+              'label': 'Height',
+              'scope': '#/properties/dimension/properties/height'
+            },
+            {
+              'type': 'Control',
+              'label': 'Length',
+              'scope': '#/properties/dimension/properties/length'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      'type': 'Control',
+      'label': 'Ram',
+      'scope': '#/properties/ram'
+    },
+    {
+      'type': 'Group',
+      'label': 'User Description',
       'elements': [
         {
           'type': 'Control',
-          'label': 'First Name',
-          'scope': '#/properties/person/properties/firstname'
-        },
-        {
-          'type': 'Control',
-          'label': 'Last Name',
-          'scope': '#/properties/person/properties/lastname'
+          'label': 'User Description',
+          'scope': '#/properties/userDescription'
         }
       ]
     }
   ]
 };
 
-export const componentView = {
+export const machineView = {
   'type': 'VerticalLayout',
   'elements': [
     {
-      'type': 'Control',
-      'label': 'Label',
-      'scope': '#/properties/label'
+      'type': 'Label',
+      'text': 'Machine'
     },
     {
-      "type": "VerticalLayout",
-      "elements": [
-        {
-          "type": "Control",
-          "scope": "#/properties/persons"
-        }
-      ]
+      'type': 'Control',
+      'label': 'Name',
+      'scope': '#/properties/name'
     }
   ]
 };
 
-export const personView = {
+export const brewingView = {
   'type': 'VerticalLayout',
   'elements': [
     {
-      'type': 'Control',
-      'label': 'First Name',
-      'scope': '#/properties/firstname'
+      'type': 'Label',
+      'text': 'Brewing Unit'
     },
     {
       'type': 'Control',
-      'label': 'Last Name',
-      'scope': '#/properties/lastname'
+      'label': 'Temperature (°C)',
+      'scope': '#/properties/temperature'
     }
   ]
-}
+};
+export const dripTrayView = {
+  'type': 'VerticalLayout',
+  'elements': [
+    {
+      'type': 'Label',
+      'text': 'DripTray'
+    },
+    {
+      'type': 'Control',
+      'label': 'Material',
+      'scope': '#/properties/material'
+    }
+  ]
+};
 
-export const schema = {
+export const waterTankView = {
+  'type': 'VerticalLayout',
+  'elements': [
+    {
+      'type': 'Label',
+      'text': 'Water Tank'
+    },
+    {
+      'type': 'Control',
+      'label': 'Capacity (ml)',
+      'scope': '#/properties/capacity'
+    }
+  ]
+};
+
+export const coffeeSchema = {
   'definitions': {
-    'component': {
-      'title': 'Component',
+    'machine': {
+      '$id': '#machine',
+      'title': 'Machine',
       'properties': {
         'typeId': {
-          'const': '#component'
+          'const': 'Machine'
         },
-        'label': {
+        'name': {
           'type': 'string'
         },
-        'persons': {
+        'children': {
           'type': 'array',
           'items': {
-            '$ref': '#/definitions/person'
+            'anyOf': [
+              { '$ref': '#/definitions/controlunit' },
+              { '$ref': '#/definitions/brewingunit' },
+              { '$ref': '#/definitions/driptray' },
+              { '$ref': '#/definitions/watertank' }
+            ]
           }
-        },
+        }
       },
       'additionalProperties': false
     },
-    'person': {
-      'title': 'Person',
+    'controlunit': {
+      '$id': '#controlunit',
+      'title': 'Control Unit',
+      'type': 'object',
       'properties': {
         'typeId': {
-          'const': '#person'
+          'const': 'ControlUnit'
         },
-        'firstname': {
+        'processor': {
+          '$ref': '#/definitions/processor'
+        },
+        'dimension': {
+          '$ref': '#/definitions/dimension'
+        },
+        'ram': {
+          'type': 'array',
+          'items': {
+            '$ref': '#/definitions/ram'
+          }
+        },
+        'display': {
+          '$ref': '#/definitions/display'
+        },
+        'userDescription': {
           'type': 'string'
+        }
+      },
+      'additionalProperties': false,
+      'required': [
+        'processor',
+        'dimension',
+        'ram'
+      ]
+    },
+    'brewingunit': {
+      '$id': '#brewingunit',
+      'title': 'Brewing Unit',
+      'properties': {
+        'typeId': {
+          'const': 'BrewingUnit'
         },
-        'lastname': {
-          'type': 'string'
-        },
+        'temperature': {
+          'type': 'number',
+          'default': 92.5
+        }
       },
       'additionalProperties': false
     },
+    'driptray': {
+      '$id': '#driptray',
+      'title': 'Drip Tray',
+      'properties': {
+        'typeId': {
+          'const': 'DripTray'
+        },
+        'material': {
+          'type': 'string',
+          'enum': [
+            'aluminium',
+            'plastic',
+            'steel'
+          ]
+        }
+      },
+      'additionalProperties': false
+    },
+    'watertank': {
+      '$id': '#watertank',
+      'title': 'Water Tank',
+      'properties': {
+        'typeId': {
+          'const': 'WaterTank'
+        },
+        'capacity': {
+          'type': 'integer'
+        }
+      },
+      'additionalProperties': false
+    },
+    'processor': {
+      '$id': '#processor',
+      'type': 'object',
+      'title': 'Processor',
+      'properties': {
+        'typeId': {
+          'const': 'Processor'
+        },
+        'vendor': {
+          'type': 'string'
+        },
+        'clockSpeed': {
+          'type': 'integer'
+        },
+        'numberOfCores': {
+          'type': 'integer'
+        },
+        'socketconnectorType': {
+          'type': 'string',
+          'enum': [
+            'A1T',
+            'Z51'
+          ]
+        },
+        'thermalDesignPower': {
+          'type': 'integer'
+        },
+        'manufactoringProcess': {
+          'type': 'string',
+          'enum': [
+            '18nm',
+            'nm25'
+          ]
+        }
+      },
+      'additionalProperties': false
+    },
+    'dimension': {
+      '$id': '#dimension',
+      'title': 'Dimension',
+      'type': 'object',
+      'properties': {
+        'typeId': {
+          'const': 'Dimension'
+        },
+        'width': {
+          'type': 'integer'
+        },
+        'height': {
+          'type': 'integer'
+        },
+        'length': {
+          'type': 'integer'
+        }
+      },
+      'additionalProperties': false
+    },
+    'ram': {
+      '$id': '#ram',
+      'title': 'RAM',
+      'type': 'object',
+      'properties': {
+        'typeId': {
+          'const': 'RAM'
+        },
+        'clockSpeed': {
+          'type': 'integer'
+        },
+        'size': {
+          'type': 'integer'
+        },
+        'type': {
+          'type': 'string',
+          'enum': [
+            'SODIMM',
+            'SIDIMM'
+          ]
+        }
+      },
+      'additionalProperties': false
+    },
+    'display': {
+      '$id': '#display',
+      'type': 'object',
+      'title': 'Display',
+      'properties': {
+        'typeId': {
+          'const': 'Display'
+        },
+        'width': {
+          'type': 'integer'
+        },
+        'height': {
+          'type': 'integer'
+        }
+      },
+      'additionalProperties': false
+    }
   },
-  '$ref': '#/definitions/component'
+  '$ref': '#/definitions/machine'
 };
-  
