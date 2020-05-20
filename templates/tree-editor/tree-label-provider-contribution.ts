@@ -22,5 +22,5 @@ export class TreeLabelProviderContribution implements LabelProviderContribution 
         return 'fa fa-coffee dark-purple';
     }
     
-    // Do not need to specify getName() nor getLongName() because the default uri label provider handles this
+    // We don't need to specify getName() nor getLongName() because the default uri label provider is responsible for them
 }
