@@ -61,10 +61,7 @@ export class TreeNodeFactory implements TreeEditor.NodeFactory {
         return node ? CoffeeModel.childrenMapping.get(node.jsonforms.type) !== undefined : false;
     }
 
-    protected defaultNode(): Pick<
-        TreeEditor.Node,
-        'children' | 'name' | 'jsonforms' | 'id' | 'icon' | 'description' | 'visible' | 'parent' | 'previousSibling' | 'nextSibling' | 'expanded' | 'selected' | 'focus' | 'decorationData'
-    > {
+protected defaultNode(): Omit<TreeEditor.Node, 'editorId'>
         return {
             id: v4(),
             expanded: false,
