@@ -83,7 +83,7 @@ export class TreeNodeFactory implements TreeEditor.NodeFactory {
 
     /** Derives the type id from the given data. */
     protected getTypeId(data: any): string {
-        return data.typeId || '';
+        return data && data.typeId || '';
     }
 
 }
