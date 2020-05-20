@@ -38,7 +38,7 @@ export class TreeModelService implements TreeEditor.ModelService {
                 definition =>
                     definition.properties && definition.properties.typeId.const === type
             );
-        if (!schema) {
+        if (schema === undefined) {
             this.logger.warn("Can't find definition schema for type " + type);
         }
         return schema;
