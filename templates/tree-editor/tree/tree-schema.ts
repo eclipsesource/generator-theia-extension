@@ -251,12 +251,6 @@ export const coffeeSchema = {
         'dimension': {
           '$ref': '#/definitions/dimension'
         },
-        'ram': {
-          'type': 'array',
-          'items': {
-            '$ref': '#/definitions/ram'
-          }
-        },
         'display': {
           '$ref': '#/definitions/display'
         },
@@ -268,7 +262,6 @@ export const coffeeSchema = {
       'required': [
         'processor',
         'dimension',
-        'ram'
       ]
     },
     'brewingunit': {
