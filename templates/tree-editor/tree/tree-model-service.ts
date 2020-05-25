@@ -9,6 +9,7 @@ import {
     controlUnitView,
     dripTrayView,
     machineView,
+    multiComponentView,
     waterTankView,
 } from './tree-schema';
 
@@ -49,6 +50,8 @@ export class TreeModelService implements TreeEditor.ModelService {
         switch (type) {
             case CoffeeModel.Type.Machine:
                 return machineView;
+            case CoffeeModel.Type.MultiComponent:
+                return multiComponentView;
             case CoffeeModel.Type.ControlUnit:
                 return controlUnitView;
             case CoffeeModel.Type.BrewingUnit:

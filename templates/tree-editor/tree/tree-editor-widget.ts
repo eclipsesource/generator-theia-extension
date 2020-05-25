@@ -50,7 +50,7 @@ export class TreeEditorWidget extends ResourceTreeEditorWidget {
 }
 
 export namespace TreeEditorWidget {
-    export const WIDGET_ID = 'my-tree-editor';
-    export const EDITOR_ID = 'my.tree.editor';
+    export const WIDGET_ID = '<%= params.extensionPath %>-tree-editor';
+    export const EDITOR_ID = '<%= params.extensionPath %>.tree.editor';
 }
     

@@ -12,16 +12,23 @@ import { TreeNodeFactory } from './tree/tree-node-factory';
 import { TreeEditorWidget } from './tree/tree-editor-widget';
 import { TreeLabelProvider } from './tree/tree-label-provider';
 import { TreeLabelProviderContribution } from './tree-label-provider-contribution';
+import { NewTreeExampleFileCommandHandler } from './example-file/example-file-command';
+import { NewTreeExampleFileCommandContribution, NewTreeExampleFileMenuContribution } from './example-file/example-file-contribution';
 
 export default new ContainerModule(bind => {
-    // Bind Theia IDE contributions
+    // Bind Theia IDE contributions for the example file creation menu entry
+    bind(NewTreeExampleFileCommandHandler).toSelf();
+    bind(CommandContribution).to(NewTreeExampleFileCommandContribution);
+    bind(MenuContribution).to(NewTreeExampleFileMenuContribution)
+
+    // Bind Theia IDE contributions for the tree editor
     bind(LabelProviderContribution).to(TreeLabelProviderContribution);
     bind(OpenHandler).to(TreeContribution);
     bind(MenuContribution).to(TreeContribution);
     bind(CommandContribution).to(TreeContribution);
     bind(LabelProviderContribution).to(TreeLabelProvider);
 
-    // bind to themselves because we use them outside of the editor widget, too.
+    // bind services to themselves because we use them outside of the editor widget, too.
     bind(TreeModelService).toSelf().inSingletonScope();
     bind(TreeLabelProvider).toSelf().inSingletonScope();
 

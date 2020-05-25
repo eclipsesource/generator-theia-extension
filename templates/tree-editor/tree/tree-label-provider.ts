@@ -14,6 +14,7 @@ const ICON_CLASSES: Map<string, string> = new Map([
     [CoffeeModel.Type.DripTray, 'fa-inbox ' + DEFAULT_COLOR],
     [CoffeeModel.Type.Display, 'fa-tv ' + DEFAULT_COLOR],
     [CoffeeModel.Type.Machine, 'fa-cogs ' + DEFAULT_COLOR],
+    [CoffeeModel.Type.MultiComponent, 'fa-cubes ' + DEFAULT_COLOR],
     [CoffeeModel.Type.Processor, 'fa-microchip ' + DEFAULT_COLOR],
     [CoffeeModel.Type.RAM, 'fa-memory ' + DEFAULT_COLOR],
     [CoffeeModel.Type.WaterTank, 'fa-tint ' + DEFAULT_COLOR],
@@ -41,7 +42,7 @@ export class TreeLabelProvider implements LabelProviderContribution {
             iconClass = ICON_CLASSES.get(element.jsonforms.type);
         }
 
-        return iconClass ? 'fa ' + iconClass : 'far ' + UNKNOWN_ICON;
+        return iconClass ? 'fa ' + iconClass : 'fa ' + UNKNOWN_ICON;
     }
 
     public getName(element: object): string | undefined {

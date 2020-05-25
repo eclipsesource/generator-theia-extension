@@ -181,10 +181,34 @@ export const waterTankView = {
   ]
 };
 
+export const multiComponentView = {
+  'type': 'VerticalLayout',
+  'elements': [
+    {
+      'type': 'Label',
+      'text': 'Multi Component'
+    },
+    {
+      'type': 'Control',
+      'label': 'Width (mm)',
+      'scope': '#/properties/width'
+    },
+    {
+      'type': 'Control',
+      'label': 'Length (mm)',
+      'scope': '#/properties/length'
+    },
+    {
+      'type': 'Control',
+      'label': 'Height (mm)',
+      'scope': '#/properties/height'
+    }
+  ]
+};
+
 export const coffeeSchema = {
   'definitions': {
     'machine': {
-      '$id': '#machine',
       'title': 'Machine',
       'properties': {
         'typeId': {
@@ -192,23 +216,29 @@ export const coffeeSchema = {
         },
         'name': {
           'type': 'string'
+        }
+      },
+      'additionalProperties': false
+    },
+    'multicomponent': {
+      'title': 'Multi Component',
+      'properties': {
+        'typeId': {
+          'const': 'MultiComponent'
         },
-        'children': {
-          'type': 'array',
-          'items': {
-            'anyOf': [
-              { '$ref': '#/definitions/controlunit' },
-              { '$ref': '#/definitions/brewingunit' },
-              { '$ref': '#/definitions/driptray' },
-              { '$ref': '#/definitions/watertank' }
-            ]
-          }
+        'width': {
+          'type': 'number'
+        },
+        'length': {
+          'type': 'number'
+        },
+        'height': {
+          'type': 'number'
         }
       },
       'additionalProperties': false
     },
     'controlunit': {
-      '$id': '#controlunit',
       'title': 'Control Unit',
       'type': 'object',
       'properties': {
@@ -242,7 +272,6 @@ export const coffeeSchema = {
       ]
     },
     'brewingunit': {
-      '$id': '#brewingunit',
       'title': 'Brewing Unit',
       'properties': {
         'typeId': {
@@ -256,7 +285,6 @@ export const coffeeSchema = {
       'additionalProperties': false
     },
     'driptray': {
-      '$id': '#driptray',
       'title': 'Drip Tray',
       'properties': {
         'typeId': {
@@ -274,7 +302,6 @@ export const coffeeSchema = {
       'additionalProperties': false
     },
     'watertank': {
-      '$id': '#watertank',
       'title': 'Water Tank',
       'properties': {
         'typeId': {
@@ -287,7 +314,6 @@ export const coffeeSchema = {
       'additionalProperties': false
     },
     'processor': {
-      '$id': '#processor',
       'type': 'object',
       'title': 'Processor',
       'properties': {
@@ -324,7 +350,6 @@ export const coffeeSchema = {
       'additionalProperties': false
     },
     'dimension': {
-      '$id': '#dimension',
       'title': 'Dimension',
       'type': 'object',
       'properties': {
@@ -344,7 +369,6 @@ export const coffeeSchema = {
       'additionalProperties': false
     },
     'ram': {
-      '$id': '#ram',
       'title': 'RAM',
       'type': 'object',
       'properties': {
@@ -368,7 +392,6 @@ export const coffeeSchema = {
       'additionalProperties': false
     },
     'display': {
-      '$id': '#display',
       'type': 'object',
       'title': 'Display',
       'properties': {

@@ -8,6 +8,7 @@ export namespace CoffeeModel {
         export const DripTray = 'DripTray';
         export const Display = 'Display';
         export const Machine = 'Machine';
+        export const MultiComponent = 'MultiComponent';
         export const Processor = 'Processor';
         export const RAM = 'RAM';
         export const WaterTank = 'WaterTank';
@@ -18,8 +19,9 @@ export namespace CoffeeModel {
     }
 
     const components = [
-        Type.ControlUnit,
+        Type.MultiComponent,
         Type.BrewingUnit,
+        Type.ControlUnit,
         Type.DripTray,
         Type.WaterTank
     ];
@@ -28,6 +30,14 @@ export namespace CoffeeModel {
     export const childrenMapping: Map<string, TreeEditor.ChildrenDescriptor[]> = new Map([
         [
             Type.Machine, [
+                {
+                    property: 'children',
+                    children: components
+                }
+            ]
+        ],
+        [
+            Type.MultiComponent, [
                 {
                     property: 'children',
                     children: components

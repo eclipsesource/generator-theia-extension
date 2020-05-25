@@ -61,7 +61,7 @@ export class TreeNodeFactory implements TreeEditor.NodeFactory {
         return node ? CoffeeModel.childrenMapping.get(node.jsonforms.type) !== undefined : false;
     }
 
-protected defaultNode(): Omit<TreeEditor.Node, 'editorId'>
+    protected defaultNode(): Omit<TreeEditor.Node, 'editorId'> {
         return {
             id: v4(),
             expanded: false,
