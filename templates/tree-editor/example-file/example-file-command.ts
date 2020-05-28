@@ -55,7 +55,26 @@ const defaultData = {
     "typeId":"Machine",
     "children": [
         {
-            "typeId": "ControlUnit"
+            "typeId": "ControlUnit",
+            "processor": {
+                "socketconnectorType": "A1T",
+                "manufactoringProcess": "18nm",
+                "thermalDesignPower": 10,
+                "numberOfCores": 2,
+                "clockSpeed": 800,
+                "vendor": "CMD",
+                "advancedConfiguration": true
+            },
+            "display": {
+                "width": 70,
+                "height": 40
+            },
+            "dimension": {
+                "width": 100,
+                "height": 80,
+                "length": 50
+            },
+            "userDescription": "Small processing unit for user input"
         },
         {
             "typeId": "MultiComponent",

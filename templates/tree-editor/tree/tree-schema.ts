@@ -1,56 +1,102 @@
+/* See https://jsonforms.io for more information on how to configure data and ui schemas. */
+
 export const controlUnitView = {
   'type': 'VerticalLayout',
   'elements': [
-    {
-      'type': 'Label',
-      'text': 'Control Unit'
-    },
     {
       'type': 'Group',
       'label': 'Processor',
       'elements': [
         {
-          'type': 'HorizontalLayout',
+          'type': 'VerticalLayout',
           'elements': [
             {
-              'type': 'VerticalLayout',
+              'type': 'HorizontalLayout',
               'elements': [
                 {
-                  'type': 'Control',
-                  'label': 'Vendor',
-                  'scope': '#/properties/processor/properties/vendor'
+                  'type': 'VerticalLayout',
+                  'elements': [
+                    {
+                      'type': 'Control',
+                      'label': 'Vendor',
+                      'scope': '#/properties/processor/properties/vendor'
+                    },
+                    {
+                      'type': 'Control',
+                      'label': 'Clock Speed',
+                      'scope': '#/properties/processor/properties/clockSpeed'
+                    }
+                  ]
                 },
                 {
-                  'type': 'Control',
-                  'label': 'Clock Speed',
-                  'scope': '#/properties/processor/properties/clockSpeed'
-                },
-                {
-                  'type': 'Control',
-                  'label': 'Number Of Cores',
-                  'scope': '#/properties/processor/properties/numberOfCores'
+                  'type': 'VerticalLayout',
+                  'elements': [
+                    {
+                      'type': 'Control',
+                      'label': 'Number Of Cores',
+                      'scope': '#/properties/processor/properties/numberOfCores'
+                    },
+                    {
+                      'type': 'Control',
+                      'label': 'Enable Advanced Configuration',
+                      'scope': '#/properties/processor/properties/advancedConfiguration'
+                    }
+                  ]
                 }
               ]
             },
             {
-              'type': 'VerticalLayout',
+              'type': 'Group',
+              'label': 'Advanced Configuration',
               'elements': [
                 {
-                  'type': 'Control',
-                  'label': 'Socketconnector Type',
-                  'scope': '#/properties/processor/properties/socketconnectorType'
-                },
-                {
-                  'type': 'Control',
-                  'label': 'Manufacturing Process',
-                  'scope': '#/properties/processor/properties/manufactoringProcess'
-                },
-                {
-                  'type': 'Control',
-                  'label': 'Thermal Design Power',
-                  'scope': '#/properties/processor/properties/thermalDesignPower'
+                  'type': 'HorizontalLayout',
+                  'elements': [
+                    {
+                      'type': 'Control',
+                      'label': 'Socketconnector Type',
+                      'scope': '#/properties/processor/properties/socketconnectorType',
+                      'rule': {
+                        'effect': 'DISABLE',
+                        'condition': {
+                          'scope': '#/properties/processor/properties/advancedConfiguration',
+                          'schema': {
+                            'const': false
+                          }
+                        }
+                      }
+                    },
+                    {
+                      'type': 'Control',
+                      'label': 'Manufacturing Process',
+                      'scope': '#/properties/processor/properties/manufactoringProcess',
+                      'rule': {
+                        'effect': 'DISABLE',
+                        'condition': {
+                          'scope': '#/properties/processor/properties/advancedConfiguration',
+                          'schema': {
+                            'const': false
+                          }
+                        }
+                      }
+                    },
+                    {
+                      'type': 'Control',
+                      'label': 'Thermal Design Power',
+                      'scope': '#/properties/processor/properties/thermalDesignPower',
+                      'rule': {
+                        'effect': 'DISABLE',
+                        'condition': {
+                          'scope': '#/properties/processor/properties/advancedConfiguration',
+                          'schema': {
+                            'const': false
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
-              ]
+              ],
             }
           ]
         }
@@ -104,18 +150,16 @@ export const controlUnitView = {
       ]
     },
     {
-      'type': 'Control',
-      'label': 'Ram',
-      'scope': '#/properties/ram'
-    },
-    {
       'type': 'Group',
-      'label': 'User Description',
+      'label': 'Additional Information',
       'elements': [
         {
           'type': 'Control',
           'label': 'User Description',
-          'scope': '#/properties/userDescription'
+          'scope': '#/properties/userDescription',
+          "options": {
+            "multi": true
+          }
         }
       ]
     }
@@ -125,10 +169,6 @@ export const controlUnitView = {
 export const machineView = {
   'type': 'VerticalLayout',
   'elements': [
-    {
-      'type': 'Label',
-      'text': 'Machine'
-    },
     {
       'type': 'Control',
       'label': 'Name',
@@ -141,10 +181,6 @@ export const brewingView = {
   'type': 'VerticalLayout',
   'elements': [
     {
-      'type': 'Label',
-      'text': 'Brewing Unit'
-    },
-    {
       'type': 'Control',
       'label': 'Temperature (°C)',
       'scope': '#/properties/temperature'
@@ -154,10 +190,6 @@ export const brewingView = {
 export const dripTrayView = {
   'type': 'VerticalLayout',
   'elements': [
-    {
-      'type': 'Label',
-      'text': 'DripTray'
-    },
     {
       'type': 'Control',
       'label': 'Material',
@@ -170,10 +202,6 @@ export const waterTankView = {
   'type': 'VerticalLayout',
   'elements': [
     {
-      'type': 'Label',
-      'text': 'Water Tank'
-    },
-    {
       'type': 'Control',
       'label': 'Capacity (ml)',
       'scope': '#/properties/capacity'
@@ -184,10 +212,6 @@ export const waterTankView = {
 export const multiComponentView = {
   'type': 'VerticalLayout',
   'elements': [
-    {
-      'type': 'Label',
-      'text': 'Multi Component'
-    },
     {
       'type': 'Control',
       'label': 'Width (mm)',
@@ -215,9 +239,12 @@ export const coffeeSchema = {
           'const': 'Machine'
         },
         'name': {
-          'type': 'string'
+          'type': 'string',
+          'minLength': 3,
+          'maxLength': 20
         }
       },
+      'required': [ 'name' ],
       'additionalProperties': false
     },
     'multicomponent': {
@@ -236,6 +263,11 @@ export const coffeeSchema = {
           'type': 'number'
         }
       },
+      'required': [
+        'width',
+        'length',
+        'height'
+      ],
       'additionalProperties': false
     },
     'controlunit': {
@@ -272,7 +304,8 @@ export const coffeeSchema = {
         },
         'temperature': {
           'type': 'number',
-          'default': 92.5
+          'default': 92.5,
+          'maximum': 100
         }
       },
       'additionalProperties': false
@@ -301,9 +334,11 @@ export const coffeeSchema = {
           'const': 'WaterTank'
         },
         'capacity': {
-          'type': 'integer'
+          'type': 'integer',
+          'minimum': 50
         }
       },
+      'required': [ 'capacity' ],
       'additionalProperties': false
     },
     'processor': {
@@ -314,13 +349,19 @@ export const coffeeSchema = {
           'const': 'Processor'
         },
         'vendor': {
-          'type': 'string'
+          'type': 'string',
+          'minLength': 3,
         },
         'clockSpeed': {
           'type': 'integer'
         },
         'numberOfCores': {
-          'type': 'integer'
+          'type': 'integer',
+          'minimum': 1,
+          'maximum': 16
+        },
+        'advancedConfiguration': {
+          'type': 'boolean'
         },
         'socketconnectorType': {
           'type': 'string',
@@ -336,10 +377,14 @@ export const coffeeSchema = {
           'type': 'string',
           'enum': [
             '18nm',
-            'nm25'
+            '25nm'
           ]
         }
       },
+      'required': [
+        'vendor',
+        'clockSpeed'
+      ],
       'additionalProperties': false
     },
     'dimension': {
@@ -350,15 +395,23 @@ export const coffeeSchema = {
           'const': 'Dimension'
         },
         'width': {
-          'type': 'integer'
+          'type': 'integer',
+          'minimum': 1
         },
         'height': {
-          'type': 'integer'
+          'type': 'integer',
+          'minimum': 1
         },
         'length': {
-          'type': 'integer'
+          'type': 'integer',
+          'minimum': 1
         }
       },
+      'required': [
+        'width',
+        'height',
+        'length'
+      ],
       'additionalProperties': false
     },
     'ram': {
@@ -392,12 +445,18 @@ export const coffeeSchema = {
           'const': 'Display'
         },
         'width': {
-          'type': 'integer'
+          'type': 'integer',
+          'minimum': 1
         },
         'height': {
-          'type': 'integer'
+          'type': 'integer',
+          'minimum': 1
         }
       },
+      'required': [
+        'width',
+        'height'
+      ],
       'additionalProperties': false
     }
   },

@@ -1,4 +1,5 @@
 import 'theia-tree-editor/style/index.css';
+import 'theia-tree-editor/style/forms.css';
 
 import { CommandContribution, MenuContribution } from '@theia/core';
 import { LabelProviderContribution, NavigatableWidgetOptions, OpenHandler, WidgetFactory } from '@theia/core/lib/browser';
