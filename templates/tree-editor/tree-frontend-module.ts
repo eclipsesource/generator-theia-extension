@@ -1,4 +1,5 @@
 import 'theia-tree-editor/style/index.css';
+import 'theia-tree-editor/style/forms.css';
 
 import { CommandContribution, MenuContribution } from '@theia/core';
 import { LabelProviderContribution, NavigatableWidgetOptions, OpenHandler, WidgetFactory } from '@theia/core/lib/browser';
@@ -10,37 +11,44 @@ import { TreeContribution } from './tree-contribution';
 import { TreeModelService } from './tree/tree-model-service';
 import { TreeNodeFactory } from './tree/tree-node-factory';
 import { TreeEditorWidget } from './tree/tree-editor-widget';
-import { TreeLabelProvider } from './tree/tree-label-provider-contribution';
-import { TreeLabelProviderContribution } from './tree-label-provider';
+import { TreeLabelProvider } from './tree/tree-label-provider';
+import { TreeLabelProviderContribution } from './tree-label-provider-contribution';
+import { NewTreeExampleFileCommandHandler } from './example-file/example-file-command';
+import { NewTreeExampleFileCommandContribution, NewTreeExampleFileMenuContribution } from './example-file/example-file-contribution';
 
 export default new ContainerModule(bind => {
-  // Bind Theia IDE contributions
-  bind(LabelProviderContribution).to(TreeLabelProviderContribution);
-  bind(OpenHandler).to(TreeContribution);
-  bind(MenuContribution).to(TreeContribution);
-  bind(CommandContribution).to(TreeContribution);
-  bind(LabelProviderContribution).to(TreeLabelProvider);
+    // Bind Theia IDE contributions for the example file creation menu entry
+    bind(NewTreeExampleFileCommandHandler).toSelf();
+    bind(CommandContribution).to(NewTreeExampleFileCommandContribution);
+    bind(MenuContribution).to(NewTreeExampleFileMenuContribution)
 
-  // bind to themselves because we use them outside of the editor widget, too.
-  bind(TreeModelService).toSelf().inSingletonScope();
-  bind(TreeLabelProvider).toSelf().inSingletonScope();
+    // Bind Theia IDE contributions for the tree editor
+    bind(LabelProviderContribution).to(TreeLabelProviderContribution);
+    bind(OpenHandler).to(TreeContribution);
+    bind(MenuContribution).to(TreeContribution);
+    bind(CommandContribution).to(TreeContribution);
+    bind(LabelProviderContribution).to(TreeLabelProvider);
 
-  bind<WidgetFactory>(WidgetFactory).toDynamicValue(context => ({
-    id: TreeEditorWidget.WIDGET_ID,
-    createWidget: (options: NavigatableWidgetOptions) => {
+    // bind services to themselves because we use them outside of the editor widget, too.
+    bind(TreeModelService).toSelf().inSingletonScope();
+    bind(TreeLabelProvider).toSelf().inSingletonScope();
 
-    const treeContainer = createBasicTreeContainter(
-      context.container,
-      TreeEditorWidget,
-      TreeModelService,
-      TreeNodeFactory
-    );
+    bind<WidgetFactory>(WidgetFactory).toDynamicValue(context => ({
+        id: TreeEditorWidget.WIDGET_ID,
+        createWidget: (options: NavigatableWidgetOptions) => {
 
-    // Bind options
-    const uri = new URI(options.uri);
-    treeContainer.bind(NavigatableTreeEditorOptions).toConstantValue({ uri });
+            const treeContainer = createBasicTreeContainter(
+                context.container,
+                TreeEditorWidget,
+                TreeModelService,
+                TreeNodeFactory
+            );
 
-    return treeContainer.get(TreeEditorWidget);
-  }
-  }));
+            // Bind options
+            const uri = new URI(options.uri);
+            treeContainer.bind(NavigatableTreeEditorOptions).toConstantValue({ uri });
+
+            return treeContainer.get(TreeEditorWidget);
+        }
+    }));
 });

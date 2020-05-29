@@ -10,53 +10,51 @@ import {
 
 import { TreeModelService } from './tree/tree-model-service';
 import { TreeEditorWidget } from './tree/tree-editor-widget';
-import { TreeLabelProvider } from './tree/tree-label-provider-contribution';
+import { TreeLabelProvider } from './tree/tree-label-provider';
 
 @injectable()
 export class TreeContribution extends BaseTreeEditorContribution {
-  @inject(ApplicationShell) protected shell: ApplicationShell;
-  @inject(OpenerService) protected opener: OpenerService;
+    @inject(ApplicationShell) protected shell: ApplicationShell;
+    @inject(OpenerService) protected opener: OpenerService;
 
-  constructor(
-    @inject(TreeModelService) modelService: TreeEditor.ModelService,
-    @inject(TreeLabelProvider) labelProvider: TreeLabelProvider
-  ) {
-    super(TreeEditorWidget.EDITOR_ID, modelService, labelProvider);
-  }
-
-  readonly id = TreeEditorWidget.WIDGET_ID;
-  readonly label = MasterTreeWidget.WIDGET_LABEL;
-
-  canHandle(uri: URI): number {
-    if (
-      uri.path.ext === '.tree'
+    constructor(
+        @inject(TreeModelService) modelService: TreeEditor.ModelService,
+        @inject(TreeLabelProvider) labelProvider: TreeLabelProvider
     ) {
-      return 1000;
+        super(TreeEditorWidget.EDITOR_ID, modelService, labelProvider);
     }
-    return 0;
-  }
 
-  registerCommands(commands: CommandRegistry): void {
-    // register your custom commands here
+    readonly id = TreeEditorWidget.WIDGET_ID;
+    readonly label = MasterTreeWidget.WIDGET_LABEL;
 
-    super.registerCommands(commands);
-  }
+    canHandle(uri: URI): number {
+        if (uri.path.ext === '.tree') {
+            return 1000;
+        }
+        return 0;
+    }
 
-  registerMenus(menus: MenuModelRegistry): void {
-    // register your custom menu actions here
-    
-    super.registerMenus(menus);
-  }
+    registerCommands(commands: CommandRegistry): void {
+        // register your custom commands here
 
-  protected createWidgetOptions(uri: URI, options?: WidgetOpenerOptions): NavigatableWidgetOptions {
-    return {
-      kind: 'navigatable',
-      uri: this.serializeUri(uri)
-    };
-  }
+        super.registerCommands(commands);
+    }
 
-  protected serializeUri(uri: URI): string {
-    return uri.withoutFragment().toString();
-  }
+    registerMenus(menus: MenuModelRegistry): void {
+        // register your custom menu actions here
+
+        super.registerMenus(menus);
+    }
+
+    protected createWidgetOptions(uri: URI, options?: WidgetOpenerOptions): NavigatableWidgetOptions {
+        return {
+            kind: 'navigatable',
+            uri: this.serializeUri(uri)
+        };
+    }
+
+    protected serializeUri(uri: URI): string {
+        return uri.withoutFragment().toString();
+    }
 
 }

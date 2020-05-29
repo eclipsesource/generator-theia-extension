@@ -174,7 +174,7 @@ module.exports = class TheiaExtension extends Base {
             lernaVersion: options["lerna-version"],
         }
         if (this.params.extensionType === ExtensionType.TreeEditor) {
-            this.params.dependencies = `,\n    "@theia/filesystem": "${this.params.theiaVersion}",\n    "@theia/workspace": "${this.params.theiaVersion}",\n    "theia-tree-editor": "0.7.0-next.5e92e0b",\n    "uuid": "^3.3.2"`;
+            this.params.dependencies = `,\n    "@theia/filesystem": "${this.params.theiaVersion}",\n    "@theia/workspace": "${this.params.theiaVersion}",\n    "theia-tree-editor": "0.7.0-next.c6fd059",\n    "uuid": "^3.3.2"`;
         } else {
             this.params.dependencies = '';
         }
