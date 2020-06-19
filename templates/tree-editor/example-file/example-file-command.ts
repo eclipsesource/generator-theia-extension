@@ -52,7 +52,8 @@ export class NewTreeExampleFileCommandHandler implements SingleUriCommandHandler
 }
 
 const defaultData = {
-    "typeId":"Machine",
+    "typeId": "Machine",
+    "name": "Super Coffee 4000",
     "children": [
         {
             "typeId": "ControlUnit",
@@ -78,6 +79,9 @@ const defaultData = {
         },
         {
             "typeId": "MultiComponent",
+            "width": 100,
+            "height": 100,
+            "length": 60,
             "children": [
                 {
                     "typeId":"WaterTank",
