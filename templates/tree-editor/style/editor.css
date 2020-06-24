@@ -1,0 +1,9 @@
+.theia-tree-editor-form {
+  display: flex;
+  justify-content: center;
+}
+
+.theia-tree-editor-form > .jsonforms-container {
+  flex-grow: 1;
+  max-width: 960px; /* Half the width of a full hd display. */
+}
