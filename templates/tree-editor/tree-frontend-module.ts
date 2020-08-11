@@ -2,7 +2,7 @@ import 'theia-tree-editor/style/index.css';
 import 'theia-tree-editor/style/forms.css';
 // Custom style sheets should be imported after all default stylesheets
 // because for conflicting styles, last imported ones win.
-import './style/editor.css';
+import '../../src/browser/style/editor.css';
 
 import { CommandContribution, MenuContribution } from '@theia/core';
 import { LabelProviderContribution, NavigatableWidgetOptions, OpenHandler, WidgetFactory } from '@theia/core/lib/browser';
