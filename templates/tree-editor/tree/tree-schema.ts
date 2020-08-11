@@ -210,7 +210,7 @@ export const waterTankView = {
 };
 
 export const multiComponentView = {
-  'type': 'VerticalLayout',
+  'type': 'HorizontalLayout',
   'elements': [
     {
       'type': 'Control',
@@ -219,14 +219,14 @@ export const multiComponentView = {
     },
     {
       'type': 'Control',
-      'label': 'Length (mm)',
-      'scope': '#/properties/length'
+      'label': 'Height (mm)',
+      'scope': '#/properties/height'
     },
     {
       'type': 'Control',
-      'label': 'Height (mm)',
-      'scope': '#/properties/height'
-    }
+      'label': 'Length (mm)',
+      'scope': '#/properties/length'
+    },
   ]
 };
 
